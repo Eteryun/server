@@ -1,0 +1,11 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "main": "com.example.Main",
+  "mixins": [
+    "example.mixins.json"
+  ],
+  "transforms": [
+    "com.example.transforms.BukkitTransform"
+  ]
+}
