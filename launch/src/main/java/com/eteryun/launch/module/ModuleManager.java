@@ -48,7 +48,7 @@ public class ModuleManager implements IModuleManager {
 
                 Logger moduleLogger = LogManager.getLogger(config.getName());
                 Class<? extends  Module> moduleClass = (Class<? extends Module>) Class.forName(config.getMain());
-                Object module = moduleClass.getSuperclass().getConstructor(IModuleManager.class, Logger.class, ModuleConfig.class, Path.class).newInstance(this, moduleLogger, config, file.toPath());
+                Object module = moduleClass.getConstructor(IModuleManager.class, Logger.class, ModuleConfig.class, Path.class).newInstance(this, moduleLogger, config, file.toPath());
                 modules.add((Module) module);
             } catch (IOException e) {
                 logger.error("Error loading module from " + file.getName(), e);

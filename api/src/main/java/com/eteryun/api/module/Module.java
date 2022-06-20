@@ -1,22 +1,18 @@
 package com.eteryun.api.module;
 
-import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
 import java.util.List;
 
 public class Module {
-    private Logger logger;
+    private final Logger logger;
 
-    private ModuleConfig config;
+    private final ModuleConfig config;
 
-    private IModuleManager moduleManager;
+    private final IModuleManager moduleManager;
 
-    private Path path;
-
-    public Module() {
-    }
+    private final Path path;
 
     public Module(IModuleManager moduleManager, Logger logger, ModuleConfig config, Path path) {
         this.logger = logger;
