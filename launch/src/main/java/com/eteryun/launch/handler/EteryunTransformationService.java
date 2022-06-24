@@ -26,18 +26,17 @@ public class EteryunTransformationService implements ITransformationService {
     @Override
     public void initialize(IEnvironment environment) {
         MixinBootstrap.init();
-        moduleManager.instanceModules();
+        moduleManager.loadConfigs();
     }
 
     @Override
     public void beginScanning(IEnvironment environment) {
         final ILaunchPluginService mixinService = environment.findLaunchPlugin("mixin").orElse(null);
         if (mixinService != null) {
-            moduleManager.loadModules();
-            moduleManager.getModules().forEach(module -> {
-                if (module.getMixins() != null){
-                    mixinService.offerResource(module.getPath(), module.getPath().getFileName().toString());
-                    module.getMixins().forEach(Mixins::addConfiguration);
+            moduleManager.getModulesConfig().forEach((file, config) -> {
+                if (config.getMixins() != null){
+                    mixinService.offerResource(file.toPath(), file.toPath().getFileName().toString());
+                    config.getMixins().forEach(Mixins::addConfiguration);
                 }
             });
         }

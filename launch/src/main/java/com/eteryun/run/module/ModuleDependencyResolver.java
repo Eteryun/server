@@ -1,4 +1,4 @@
-package com.eteryun.launch.module;
+package com.eteryun.run.module;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;

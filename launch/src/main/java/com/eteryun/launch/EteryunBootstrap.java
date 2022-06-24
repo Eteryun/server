@@ -23,7 +23,7 @@ public class EteryunBootstrap {
 
     public EteryunBootstrap() {
         this.moduleManager = new ModuleManager();
-        instance = this;
+        EteryunBootstrap.instance = this;
     }
 
     public static void main(final @NonNull String[] args) {

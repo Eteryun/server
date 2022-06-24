@@ -11,17 +11,15 @@ import java.util.List;
 public class ModuleTransformResolver {
     private static final Logger logger = LogManager.getLogger("Eteryun Transformer");
 
-    public static List<ITransform> resolveTransforms(Module module) {
+    public static List<ITransform> resolveTransforms(List<String> transformsClass) {
         List<ITransform> transforms = new ArrayList<>();
-        if (module.getTransforms() != null) {
-            for (String className : module.getTransforms()) {
-                try {
-                    Class transformClass = Class.forName(className);
-                    ITransform transform = (ITransform) transformClass.getConstructor().newInstance();
-                    transforms.add(transform);
-                } catch (Exception e) {
-                    logger.error("Failed to load transform class: " + className, e);
-                }
+        for (String className : transformsClass) {
+            try {
+                Class transformClass = Class.forName(className);
+                ITransform transform = (ITransform) transformClass.getConstructor().newInstance();
+                transforms.add(transform);
+            } catch (Exception e) {
+                logger.error("Failed to load transform class: " + className, e);
             }
         }
         return transforms;

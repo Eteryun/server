@@ -2,6 +2,7 @@ package com.eteryun.launch.asm;
 
 import com.eteryun.api.asm.ITransform;
 import com.eteryun.api.module.Module;
+import com.eteryun.api.module.ModuleConfig;
 import com.eteryun.launch.EteryunBootstrap;
 import com.eteryun.launch.module.ModuleManager;
 import cpw.mods.modlauncher.api.ITransformer;
@@ -19,9 +20,9 @@ public class EteryunTransformer implements ITransformer<ClassNode> {
     List<ITransform> transforms = new ArrayList<>();
 
     public EteryunTransformer() {
-        for (Module module : moduleManager.getModules()) {
-            if (module.getTransforms() != null) {
-                transforms.addAll(ModuleTransformResolver.resolveTransforms(module));
+        for (ModuleConfig config : moduleManager.getModulesConfig().values()) {
+            if (config.getTransforms() != null) {
+                transforms.addAll(ModuleTransformResolver.resolveTransforms(config.getTransforms()));
             }
         }
     }

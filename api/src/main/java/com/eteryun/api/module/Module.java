@@ -9,22 +9,16 @@ public class Module {
     private final Logger logger;
 
     private final ModuleConfig config;
-
-    private final IModuleManager moduleManager;
-
     private final Path path;
 
-    public Module(IModuleManager moduleManager, Logger logger, ModuleConfig config, Path path) {
+    public Module(Logger logger, ModuleConfig config, Path path) {
         this.logger = logger;
         this.config = config;
-        this.moduleManager = moduleManager;
         this.path = path;
     }
 
     public void onLoad() {
-        logger.info("Loaded");
     }
-
     public String getName() {
         return config.getName();
     }
@@ -43,10 +37,6 @@ public class Module {
 
     public List<String> getTransforms() {
         return config.getTransforms();
-    }
-
-    public Module getModule(String name) {
-        return moduleManager.getModule(name);
     }
 
     public Path getPath() {
