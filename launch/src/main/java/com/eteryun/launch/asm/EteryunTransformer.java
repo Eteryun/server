@@ -1,21 +1,16 @@
 package com.eteryun.launch.asm;
 
 import com.eteryun.api.asm.ITransform;
-import com.eteryun.api.module.Module;
 import com.eteryun.api.module.ModuleConfig;
 import com.eteryun.launch.EteryunBootstrap;
 import com.eteryun.launch.module.ModuleManager;
-import cpw.mods.modlauncher.api.ITransformer;
-import cpw.mods.modlauncher.api.ITransformerVotingContext;
-import cpw.mods.modlauncher.api.TransformerVoteResult;
-import org.objectweb.asm.tree.ClassNode;
 
+import java.lang.instrument.ClassFileTransformer;
+import java.security.ProtectionDomain;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-public class EteryunTransformer implements ITransformer<ClassNode> {
+public class EteryunTransformer implements ClassFileTransformer {
     private ModuleManager moduleManager = EteryunBootstrap.getInstance().getModuleManager();
     List<ITransform> transforms = new ArrayList<>();
 
@@ -27,29 +22,15 @@ public class EteryunTransformer implements ITransformer<ClassNode> {
         }
     }
 
-    @Override
-    public ClassNode transform(ClassNode classNode, ITransformerVotingContext context) {
+    public byte[] transform(final ClassLoader loader, final String className,
+                            final Class<?> classBeingRedefined, final ProtectionDomain protectionDomain,
+                            final byte[] classfileBuffer) {
+        byte[] bytes = classfileBuffer;
         for (ITransform transform : transforms) {
-            if (transform.getTarget().equals(classNode.name)) {
-                transform.transform(classNode);
+            if (transform.getTarget().equals(className)) {
+                bytes = transform.transform(bytes);
             }
         }
-        return classNode;
-    }
-
-    @Override
-    public TransformerVoteResult castVote(ITransformerVotingContext context) {
-        return TransformerVoteResult.YES;
-    }
-
-    @Override
-    public Set<Target> targets() {
-        HashSet<Target> hashset = new HashSet<>();
-
-        transforms.forEach(transform -> {
-            hashset.add(Target.targetClass(transform.getTarget()));
-        });
-
-        return hashset;
+        return bytes;
     }
 }

@@ -1,6 +1,7 @@
 package com.eteryun.launch.handler;
 
 import com.eteryun.launch.EteryunBootstrap;
+import com.eteryun.launch.agent.Agent;
 import com.eteryun.launch.asm.EteryunTransformer;
 import com.eteryun.launch.module.ModuleManager;
 import cpw.mods.modlauncher.api.IEnvironment;
@@ -27,6 +28,7 @@ public class EteryunTransformationService implements ITransformationService {
     public void initialize(IEnvironment environment) {
         MixinBootstrap.init();
         moduleManager.loadConfigs();
+        Agent.addTransformer(new EteryunTransformer());
     }
 
     @Override
@@ -49,8 +51,6 @@ public class EteryunTransformationService implements ITransformationService {
 
     @Override
     public List<ITransformer> transformers() {
-        List<ITransformer> list = new ArrayList<>();
-        list.add(new EteryunTransformer());
-        return list;
+        return new ArrayList<>();
     }
 }
